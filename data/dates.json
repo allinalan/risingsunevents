@@ -1,0 +1,17 @@
+{
+  "_comment": "Important Dates. Written by the webmaster on Alan's approve (rsd-shift-picking webmaster.js); SUNNY reads this file. Times are Arizona time (no daylight saving).",
+  "timezone": "America/Phoenix",
+  "updated": "2026-11-17",
+  "events": [
+    {
+      "id": "2027-01-13-spring-show-team-meeting",
+      "title": "RSD's Spring Show Team Meeting",
+      "date": "2027-01-13",
+      "start": "09:00",
+      "end": "16:00",
+      "place": "East Valley Office, 1811 South Alma School Road STE 275, Mesa, AZ 85210",
+      "kind": "events-team",
+      "note": ""
+    }
+  ]
+}

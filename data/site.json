@@ -1,0 +1,19 @@
+{
+  "title": "Rising Sun Division",
+  "tagline": "Events Team",
+  "domain": "www.risingsunevents.net",
+  "nav": [
+    "home",
+    "dates",
+    "join",
+    "scripts",
+    "service",
+    "kiosk",
+    "maricopa",
+    "resources",
+    "money",
+    "speakers"
+  ],
+  "footer": "Rising Sun Division Events Team",
+  "cname": null
+}
