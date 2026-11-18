@@ -14,7 +14,7 @@ old: /new-page-45
 - Matt Foss - RSD Coordinator/Elite Team/CSP | img/matt-foss-pic.jpeg
 - Alan Hernandez - RSD Coordinator/Elite Team/CSP | img/img-4121.jpg
 - Jason Jeffrey - Elite Team/CSP | img/jason-jeffrey.jpg
-- Jeremy Katen - Elite Team/CSP | img/jeremy-katen-pic.jpeg
+- Jeremy Katen - Elite Team/CSP | img/jeremy-katen-2026.jpg
 - Luke Mills - Maricopa Consultant/Elite Team/CSP | img/luke-mills.jpeg
 - Alec Luyendyk - SE Coordinator/Elite Team/CSP | img/alec-profile-pic.jpg
 - Adam Conroy - Elite Team/CSP | img/adam-conroy.jpeg
