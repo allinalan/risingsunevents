@@ -68,6 +68,36 @@ function renderBody(body, ctx) {
       out.push(`<div class="embed"><iframe src="${esc(ctx.embedUrl(m[1]))}" title="Video" loading="lazy" allowfullscreen></iframe></div>`); i++; continue;
     }
     if (line.trim() === '@dates') { out.push(ctx.datesHtml(false)); i++; continue; }
+    if ((m = line.match(/^@team(?:\s+(.*))?$/))) {
+      // The team banner (Alan, 2026-11-18: "We need it to look exactly or closely similar to this banner"): a gray box
+      // with the title, round photos in rows with a name under each, and lines of text underneath. Written as
+      //   @team <title>
+      //   - <name> | img/<picture>
+      //   > <a line under the photos>
+      // with no blank lines inside. Each photo is its own line, so changing one person is a one-line change.
+      const title = (m[1] || '').trim(); i++;
+      const people = [], notes = [];
+      while (i < lines.length && /^(- |> )/.test(lines[i])) {
+        const l = lines[i];
+        if (l.startsWith('> ')) notes.push(l.slice(2).trim());
+        else {
+          if (notes.length) throw new Error(`@team: a photo line comes after a "> " line (keep the photos first): ${l}`);
+          const [name, img, extra] = l.slice(2).split('|').map(s => s.trim());
+          if (!name || !img || extra !== undefined) throw new Error(`@team: "${l}" should be "- Name | img/picture.jpg"`);
+          people.push({ name, img });
+        }
+        i++;
+      }
+      if (!people.length) throw new Error('@team has no photos: each one is a line "- Name | img/picture.jpg" right under it');
+      out.push('<section class="team">' +
+        (title ? `<h2 class="team-title">${inline(title)}</h2>` : '') +
+        '<div class="team-grid">' + people.map(p => {
+          ctx.useAsset(p.img);
+          return `<figure><img src="${esc(ctx.asset(p.img))}" alt="${esc(p.name)}" loading="lazy"><figcaption>${esc(p.name)}</figcaption></figure>`;
+        }).join('') + '</div>' +
+        notes.map(n => `<p class="team-note">${inline(n)}</p>`).join('') + '</section>');
+      continue;
+    }
     if (line.trim() === '@people' || line.trim() === '@gallery') {
       const kind = line.trim().slice(1); i++;
       const items = [];
@@ -137,6 +167,14 @@ function pageText(body, { links, origin, problems, slug }) {
     if ((m = line.match(/^@button\s+(.*)$/))) { out.push('Button: ' + inline(m[1].trim())); continue; }
     if ((m = line.match(/^@embed\s+(\S+)$/))) { out.push('Video: ' + abs(m[1])); continue; }
     if (line.trim() === '@dates') { out.push(`(The Important Dates list: ${origin}/dates/)`); continue; }
+    if ((m = line.match(/^@team(?:\s+(.*))?$/))) {
+      if (m[1] && m[1].trim()) out.push(inline(m[1].trim()));
+      while (i + 1 < lines.length && /^(- |> )/.test(lines[i + 1])) {
+        i++;
+        out.push(lines[i].startsWith('> ') ? inline(lines[i].slice(2).trim()) : '- ' + lines[i].slice(2).split('|')[0].trim());
+      }
+      continue;
+    }
     if (line.trim() === '@people' || line.trim() === '@gallery') {
       const people = line.trim() === '@people';
       while (i + 1 < lines.length && /^- /.test(lines[i + 1])) { i++; if (people) out.push('- ' + lines[i].slice(2).split('|')[0].trim()); }
@@ -239,7 +277,7 @@ function shell({ title, description, base, navHtml, main, slug, site, canonical 
 <link rel="icon" href="${base}favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="${base}site.css">
+${main.includes('<section class="team">') ? '<link href="https://fonts.googleapis.com/css2?family=Forum&family=Kodchasan:wght@500&display=swap" rel="stylesheet">\n' : ''}<link rel="stylesheet" href="${base}site.css">
 </head>
 <body class="page-${esc(slug)}">
 <header class="site-header">

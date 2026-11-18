@@ -58,6 +58,35 @@ t('pages.json words: links keep their address, headings keep their links, no HTM
   assert.match(txt, /Important Dates list: https:\/\/o\.net\/dates\//);
   assert.ok(!/img\/x\.jpg|\*\*/.test(txt), txt);
 });
+t('@team: the banner box, a round photo and name per line, the lines under it; SUNNY reads names and lines', () => {
+  const used = [];
+  const h = renderBody('@team Rising Sun **Team**\n- Ann Lee | img/ann.jpg\n- Bo Ray | img/bo.jpg\n> Line one\n> **$15K** required', { ...ctx, useAsset: a => used.push(a) });
+  assert.match(h, /^<section class="team"><h2 class="team-title">Rising Sun <strong>Team<\/strong><\/h2><div class="team-grid"><figure><img src="img\/ann.jpg" alt="Ann Lee" loading="lazy"><figcaption>Ann Lee<\/figcaption><\/figure><figure>/);
+  assert.match(h, /<\/div><p class="team-note">Line one<\/p><p class="team-note"><strong>\$15K<\/strong> required<\/p><\/section>$/);
+  assert.deepStrictEqual(used, ['img/ann.jpg', 'img/bo.jpg']);
+  assert.throws(() => renderBody('@team T\n- Ann Lee', ctx), /should be "- Name \| img\/picture.jpg"/);
+  assert.throws(() => renderBody('@team T\n> only words', ctx), /no photos/);
+  assert.throws(() => renderBody('@team T\n- A | img/a.jpg\n> x\n- B | img/b.jpg', ctx), /photo line comes after/);
+  const p = [];
+  const txt = pageText('@team Rising Sun Team\n- Ann Lee | img/ann.jpg\n> **$15K** required', { links: {}, origin: 'https://o.net', problems: p, slug: 'home' });
+  assert.strictEqual(txt, 'Rising Sun Team\n- Ann Lee\n$15K required');
+});
+t('@team on a real build: its fonts load on that page only, and a missing photo is a build problem', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rse-team-'));
+  for (const d of ['content', 'data', 'assets']) fs.cpSync(path.join(__dirname, '..', d), path.join(tmp, d), { recursive: true });
+  fs.copyFileSync(path.join(__dirname, '..', 'build.js'), path.join(tmp, 'build.js'));
+  const home = path.join(tmp, 'content', 'home.md');
+  fs.writeFileSync(home, fs.readFileSync(home, 'utf8').replace(/^!\[[^\n]*\n/m, '@team The Team\n- Nobody | img/not-there.jpg\n'));
+  const r = require('child_process').spawnSync(process.execPath, ['build.js', '--check'], { cwd: tmp, encoding: 'utf8' });
+  assert.notStrictEqual(r.status, 0);
+  assert.match(r.stdout + r.stderr, /img\/not-there\.jpg, which is not in assets/);
+  fs.writeFileSync(home, fs.readFileSync(home, 'utf8').replace('img/not-there.jpg', 'img/updated.png'));
+  const ok = require('child_process').spawnSync(process.execPath, ['build.js'], { cwd: tmp, encoding: 'utf8' });
+  assert.strictEqual(ok.status, 0, ok.stdout + ok.stderr);
+  assert.match(fs.readFileSync(path.join(tmp, 'docs', 'index.html'), 'utf8'), /family=Forum&family=Kodchasan/);
+  assert.ok(!/Kodchasan/.test(fs.readFileSync(path.join(tmp, 'docs', 'dates', 'index.html'), 'utf8')));
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
 t('the real site writes pages.json: every page, home first, each with words and its own address', () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'rse-test-'));
   build(out);

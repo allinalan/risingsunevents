@@ -63,3 +63,18 @@ hr{border:0;border-top:1px solid var(--line);margin:2em 0}
   .btn{min-width:0;width:100%;max-width:360px}
 }
 .page-home h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* @team: the team banner (2026-11-18). Matches the banner picture it replaced: a light gray box a little wider than the
+   page, the orange title (Forum), round photos 8 to a row with the last row centered, names under them (Kodchasan),
+   orange lines underneath. 4 to a row on a phone (names may wrap there), 3 on a very small one. */
+.team{--per:8;--gap:14px;--sun:#c9561d;background:#d9d7d4;border-radius:6px;padding:14px clamp(10px,2.4vw,26px) 18px;margin:0 0 1.6em;
+  position:relative;left:50%;transform:translateX(-50%);width:min(1080px,calc(100vw - 32px));text-align:center}
+.team .team-title{font-family:Forum,Marcellus,Georgia,serif;font-weight:400;color:var(--sun);font-size:clamp(1.7rem,5.6vw,4.1rem);line-height:1.1;margin:0 0 .3em;letter-spacing:.01em}
+.team-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:12px var(--gap);margin:0 0 .9em}
+.team figure{margin:0;flex:0 0 calc((100% - (var(--per) - 1) * var(--gap)) / var(--per));min-width:0}
+.team img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;border:1.5px solid #2a2a2a;margin:0 auto}
+.team figcaption{font-family:Kodchasan,"Nunito Sans",sans-serif;font-weight:500;color:#222;font-size:clamp(.66rem,1.3vw,.9rem);line-height:1.25;margin-top:5px;white-space:nowrap}
+.team img{width:90%}
+.team-note{color:var(--sun);font-size:clamp(.88rem,1.6vw,1.05rem);line-height:1.5;margin:.5em auto 0;max-width:62em}
+.team-note strong{font-size:1.18em;font-weight:700}
+@media (max-width:720px){.team{--per:4;--gap:8px}.team figcaption{white-space:normal;overflow-wrap:anywhere}.team img{width:100%}}
+@media (max-width:330px){.team{--per:3}}
