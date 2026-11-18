@@ -12,8 +12,9 @@ Built 2026-11-17 to replace the Squarespace site (Alan: "Build my own site", all
   on Alan's typed approve, from the mini's checkout `~/automations/risingsunevents`; and people, through PRs or plain
   pushes. The agent starts every publish from what GitHub has (fetch + reset to origin/main) and pushes plainly; never
   force-push.
-- **Readers:** reps (the site), SUNNY (`dates.json`, once `SUNNY_DATES_SOURCE=site`), the webmaster's read-back
-  (`build.json` fingerprint).
+- **Readers:** reps (the site), SUNNY (`dates.json`, once `SUNNY_DATES_SOURCE=site`; and since 2026-11-18 `pages.json`,
+  every page as plain text, so it can answer from the whole site), the webmaster's read-back (`build.json` fingerprint).
+  `pages.json` is built from the same markdown as the pages: a link is `label (url)`, no images, no HTML.
 - **Domain:** live at www.risingsunevents.net since 2026-11-17 (`data/site.json` `cname`; build.js writes docs/CNAME;
   Pages HTTPS enforced). DNS stays at Squarespace Domains (rsdcoordinator2's Squarespace login): four `A @` to GitHub
   Pages, `CNAME www` allinalan.github.io, plus three verification CNAMEs left as they were. CUTOVER.md has the record.

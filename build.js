@@ -116,6 +116,39 @@ function renderBody(body, ctx) {
   return out.join('\n');
 }
 
+// ---------- pages.json: every page as plain text, for SUNNY ----------
+// SUNNY (sunny-bot lib/live-sources.js, source "site") reads https://www.risingsunevents.net/pages.json so it can answer
+// from the whole site. Plain words and links only: no images, no HTML. A link is "label (url)"; a page on this site is
+// its full address. Built from the same markdown as the pages, so the two never disagree.
+function pageText(body, { links, origin, problems, slug }) {
+  const abs = url => (/^(https?:|mailto:|tel:)/i.test(url) ? url : url.startsWith('//') ? 'https:' + url : `${origin}/${url.replace(/^\.?\//, '')}`);
+  const linkOf = id => { const l = links[id]; if (!l) { problems.push(`content/${slug}.md: [[${id}]] is not in data/links.json`); return id; } return `${l.label} (${l.url})`; };
+  const inline = t => t
+    .replace(/\[\[([A-Za-z0-9_-]+)\]\]/g, (_, id) => linkOf(id))
+    .replace(/\[([^\]]*(?:\[[^\]]*\][^\]]*)*)\]\(([^)\s]+)\)/g, (_, label, url) => `${label.replace(/\*/g, '')} (${abs(url)})`)
+    .replace(/\*\*([^*]+)\*\*/g, '$1').replace(/\*([^*]+)\*/g, '$1');
+  const out = [];
+  const lines = body.replace(/\r/g, '').split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    let m;
+    if (!line.trim() || line.trim() === '---' || /^!\[[^\]]*\]\([^)\s]+\)$/.test(line)) continue;
+    if ((m = line.match(/^(#{1,4})\s+(.*)$/))) { out.push('', '#'.repeat(m[1].length) + ' ' + inline(m[2])); continue; }
+    if ((m = line.match(/^@button\s+(.*)$/))) { out.push('Button: ' + inline(m[1].trim())); continue; }
+    if ((m = line.match(/^@embed\s+(\S+)$/))) { out.push('Video: ' + abs(m[1])); continue; }
+    if (line.trim() === '@dates') { out.push(`(The Important Dates list: ${origin}/dates/)`); continue; }
+    if (line.trim() === '@people' || line.trim() === '@gallery') {
+      const people = line.trim() === '@people';
+      while (i + 1 < lines.length && /^- /.test(lines[i + 1])) { i++; if (people) out.push('- ' + lines[i].slice(2).split('|')[0].trim()); }
+      continue;
+    }
+    if (/^ {2}- /.test(line)) { out.push('  - ' + inline(line.slice(4))); continue; }
+    if (/^- /.test(line)) { out.push('- ' + inline(line.slice(2))); continue; }
+    out.push(inline(line.trim()));
+  }
+  return out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
 // ---------- dates ----------
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
@@ -340,6 +373,16 @@ function build(outDir) {
 
   fs.writeFileSync(path.join(outDir, 'dates.json'), JSON.stringify(dates, null, 2) + '\n');
   fs.writeFileSync(path.join(outDir, 'links.json'), JSON.stringify(links, null, 2) + '\n');
+  const pagesJson = {
+    _about: 'Every page of this site as plain text, for SUNNY (the RSD rep assistant). Built by build.js from content/*.md.',
+    origin,
+    pages: [...site.nav.filter(s => bySlug[s]), ...pages.map(p => p.slug).filter(s => !site.nav.includes(s))].map(s => {
+      const p = bySlug[s];
+      return { slug: s, title: p.meta.title, url: s === 'home' ? `${origin}/` : `${origin}/${s}/`, text: pageText(p.body, { links, origin, problems, slug: s }) };
+    }),
+  };
+  for (const p of pagesJson.pages) if (!p.text) problems.push(`content/${p.slug}.md: no words for pages.json`);
+  fs.writeFileSync(path.join(outDir, 'pages.json'), JSON.stringify(pagesJson, null, 2) + '\n');
   fs.writeFileSync(path.join(outDir, 'dates.ics'), icsFor(dates, site.domain));
   fs.writeFileSync(path.join(outDir, '.nojekyll'), '');
   if (site.cname) fs.writeFileSync(path.join(outDir, 'CNAME'), site.cname + '\n');
@@ -383,4 +426,4 @@ if (require.main === module) {
   console.log(`${check ? 'check ok' : 'built docs/'}: ${r.pages.length} pages, fingerprint ${r.fingerprint}`);
 }
 
-module.exports = { build, renderBody, checkDates, icsFor, sortEvents };
+module.exports = { build, renderBody, checkDates, icsFor, sortEvents, pageText };

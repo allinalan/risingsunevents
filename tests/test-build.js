@@ -2,7 +2,7 @@
 'use strict';
 const assert = require('assert');
 const fs = require('fs'), os = require('os'), path = require('path');
-const { build, renderBody, checkDates, icsFor } = require('../build.js');
+const { build, renderBody, checkDates, icsFor, pageText } = require('../build.js');
 let n = 0; const t = (name, fn) => { fn(); n++; console.log('ok', name); };
 
 const ctx = { asset: r => r, useAsset() {}, linkHtml: id => `<a href="L:${id}">${id}</a>`, aHtml: (l, u) => `<a href="${u}">${l}</a>`,
@@ -44,6 +44,33 @@ t('the real site builds with no problems, and keeps every old address', () => {
     assert.ok(fs.existsSync(path.join(out, o, 'index.html')), o);
   assert.match(fs.readFileSync(path.join(out, '404.html'), 'utf8'), /new-events/);
   assert.ok(JSON.parse(fs.readFileSync(path.join(out, 'dates.json'), 'utf8')).events.length >= 1);
+  fs.rmSync(out, { recursive: true, force: true });
+});
+t('pages.json words: links keep their address, headings keep their links, no HTML, no images', () => {
+  const problems = [];
+  const txt = pageText('# Kiosk\n\n![a](img/x.jpg)\n\n## [Videos](https://y.com/p?list=AbC)\n- [[teamPolicy]]\n@button [Form](files/f.pdf)\n@dates\nplain **b** <i>', {
+    links: { teamPolicy: { label: 'Team policy', url: 'https://docs.google.com/x' } }, origin: 'https://o.net', problems, slug: 'k' });
+  assert.deepStrictEqual(problems, []);
+  assert.match(txt, /^# Kiosk/);
+  assert.match(txt, /## Videos \(https:\/\/y\.com\/p\?list=AbC\)/);
+  assert.match(txt, /- Team policy \(https:\/\/docs\.google\.com\/x\)/);
+  assert.match(txt, /Button: Form \(https:\/\/o\.net\/files\/f\.pdf\)/);
+  assert.match(txt, /Important Dates list: https:\/\/o\.net\/dates\//);
+  assert.ok(!/img\/x\.jpg|\*\*/.test(txt), txt);
+});
+t('the real site writes pages.json: every page, home first, each with words and its own address', () => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'rse-test-'));
+  build(out);
+  const pj = JSON.parse(fs.readFileSync(path.join(out, 'pages.json'), 'utf8'));
+  const md = fs.readdirSync(path.join(__dirname, '..', 'content')).filter(f => f.endsWith('.md'));
+  assert.strictEqual(pj.pages.length, md.length);
+  assert.strictEqual(pj.pages[0].slug, 'home');
+  for (const p of pj.pages) {
+    assert.ok(p.text.length > 50, p.slug);
+    assert.strictEqual(p.url, p.slug === 'home' ? pj.origin + '/' : `${pj.origin}/${p.slug}/`);
+    assert.ok(!/<\/?[a-z][^>]*>/i.test(p.text), p.slug + ' has HTML');
+  }
+  assert.ok(pj.pages.some(p => p.slug === 'kiosk'));
   fs.rmSync(out, { recursive: true, force: true });
 });
 console.log(`${n} passed`);
