@@ -1,7 +1,7 @@
 # risingsunevents.net
 
 The Rising Sun Division Events Team site. Plain files, built by `node build.js` into `docs/`, served by GitHub Pages
-at **https://www.risingsunevents.net** (staged at https://allinalan.github.io/risingsunevents/ until the domain moves).
+at **https://www.risingsunevents.net** (live since 2026-11-17).
 
 | To change | Edit | Then |
 |---|---|---|

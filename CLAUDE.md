@@ -14,7 +14,8 @@ Built 2026-11-17 to replace the Squarespace site (Alan: "Build my own site", all
   force-push.
 - **Readers:** reps (the site), SUNNY (`dates.json`, once `SUNNY_DATES_SOURCE=site`), the webmaster's read-back
   (`build.json` fingerprint).
-- **Domain:** `data/site.json` `cname` is null while staging at allinalan.github.io/risingsunevents. The cutover sets it
-  to `www.risingsunevents.net` (docs/CUTOVER.md); the DNS records at Squarespace Domains are Alan's step.
+- **Domain:** live at www.risingsunevents.net since 2026-11-17 (`data/site.json` `cname`; build.js writes docs/CNAME;
+  Pages HTTPS enforced). DNS stays at Squarespace Domains (rsdcoordinator2's Squarespace login): four `A @` to GitHub
+  Pages, `CNAME www` allinalan.github.io, plus three verification CNAMEs left as they were. CUTOVER.md has the record.
 - Arizona time everywhere (`-07:00`, no daylight saving). Phone numbers on /join are the ones the old site already
   published; do not add more personal details.
