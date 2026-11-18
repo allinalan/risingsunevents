@@ -1,6 +1,6 @@
 # Moving www.risingsunevents.net from Squarespace to this repo
 
-**Done 2026-11-17** (steps 1-3; step 4 live: SUNNY deployed 5588dfc with SUNNY_DATES_SOURCE=site the same night, read back; step 5 is Alan's). At Squarespace the
+**Done 2026-11-17** (steps 1-3; step 4 live: SUNNY deployed 5588dfc with SUNNY_DATES_SOURCE=site the same night, read back; step 5 done the same night: the Squarespace Core Plan website subscription ($348/yr) is cancelled and ends Mar 27, 2027, no refund; the domain is a separate subscription, Active, renews by Feb 20, 2027). At Squarespace the
 records were under Custom records, not a Defaults preset, so the four Squarespace `A @` records were edited in place to
 GitHub's four and `www` from ext-cust.squarespace.com to allinalan.github.io; the two Google (`gv-…googlehosted.com`) and
 one Squarespace verify CNAME were left alone. Before: A @ 198.185.159.144/.145, 198.49.23.144/.145, CNAME www
