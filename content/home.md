@@ -9,8 +9,11 @@ description: The Rising Sun Division Events Team: team documents, forms, importa
 
 ![Rising Sun Division Events Team](img/updated.png)
 
+@button [SUNNY, the Team's Assistant](/sunny/)
+
 ## RSD Team Documents
 
+- [[showShiftBoard]]
 - [[eventCalendar]]
 - [[teamPolicy]]
 - [[teamContacts]]

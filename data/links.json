@@ -1,6 +1,8 @@
 {
   "_comment": "Team links shown on the site. A page uses one as [[id]] or @button [[id]]. The webmaster changes these on Alan's approve; change a url here, never in the pages.",
   "eventCalendar": { "label": "2026 Event Calendar", "url": "https://docs.google.com/spreadsheets/d/17gPzz1g5JHIiou5BbMmUZQd2RvlMdvhqHr91l0E7Sgo/edit?usp=sharing" },
+  "showShiftBoard": { "label": "Show Shift Board", "url": "https://allinalan.github.io/rsd-show-shift-board/" },
+  "sunny": { "label": "Open SUNNY", "url": "https://sunny-rsd.vercel.app" },
   "teamPolicy": { "label": "Team Policy", "url": "https://docs.google.com/document/d/1hOOPl0pvRpTu-_gK6wowACUUarPBS_6IjQyrjAg7Mhk/edit?usp=sharing" },
   "teamContacts": { "label": "Team Contact Info", "url": "https://docs.google.com/spreadsheets/d/1NGmcrcSeMN_02Mmai7ybEgsXHQ0XFGTe7gSvzKLkkp8/edit?usp=sharing" },
   "leadershipRoles": { "label": "RSD Leadership Roles", "url": "https://docs.google.com/document/d/1DFP_txCInxiGtHuluImi1c-2RB7HFfb-PRgZWL46MFk/edit?tab=t.0" },

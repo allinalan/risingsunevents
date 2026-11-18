@@ -1,14 +1,54 @@
 {
   "_comment": "Important Dates. Written by the webmaster on Alan's approve (rsd-shift-picking webmaster.js); SUNNY reads this file. Times are Arizona time (no daylight saving).",
   "timezone": "America/Phoenix",
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "events": [
+    {
+      "id": "2026-12-01-freshmen-jv-meeting",
+      "title": "Freshmen/JV Meeting",
+      "date": "2026-12-01",
+      "start": "18:00",
+      "end": "21:00",
+      "place": "East Valley Office, 1811 South Alma School Road STE 275, Mesa, AZ 85210",
+      "kind": "events-team",
+      "note": ""
+    },
+    {
+      "id": "2027-01-04-leadership-meeting-2027",
+      "title": "Leadership Meeting 2027",
+      "date": "2027-01-04",
+      "start": "09:00",
+      "end": "10:30",
+      "place": "Zoom",
+      "kind": "leaders",
+      "note": ""
+    },
+    {
+      "id": "2027-01-13-town-hall-meeting",
+      "title": "Town Hall Meeting",
+      "date": "2027-01-13",
+      "start": "09:00",
+      "end": "11:00",
+      "place": "East Valley Office, 1811 South Alma School Road STE 275, Mesa, AZ 85210",
+      "kind": "events-team",
+      "note": ""
+    },
+    {
+      "id": "2027-01-13-shift-picking-elite",
+      "title": "Shift picking Elite",
+      "date": "2027-01-13",
+      "start": "11:00",
+      "end": "12:00",
+      "place": "East Valley Office, 1811 South Alma School Road STE 275, Mesa, AZ 85210",
+      "kind": "picking",
+      "note": ""
+    },
     {
       "id": "2027-01-13-spring-show-team-meeting",
       "title": "RSD's Spring Show Team Meeting",
       "date": "2027-01-13",
-      "start": "09:00",
-      "end": "16:00",
+      "start": "12:00",
+      "end": "17:00",
       "place": "East Valley Office, 1811 South Alma School Road STE 275, Mesa, AZ 85210",
       "kind": "events-team",
       "note": ""

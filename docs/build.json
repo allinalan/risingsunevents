@@ -1,5 +1,5 @@
 {
-  "fingerprint": "207ebba2aa8d0a37",
+  "fingerprint": "cb106e9009f37124",
   "pages": [
     "dates",
     "home",
@@ -10,7 +10,8 @@
     "resources",
     "scripts",
     "service",
-    "speakers"
+    "speakers",
+    "sunny"
   ],
-  "events": 1
+  "events": 5
 }
