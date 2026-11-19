@@ -34,7 +34,6 @@ description: The Rising Sun Division Events Team: team documents, forms, importa
 
 ## RSD Team Documents
 
-- [[showShiftBoard]]
 - [[eventCalendar]]
 - [[teamPolicy]]
 - [[teamContacts]]

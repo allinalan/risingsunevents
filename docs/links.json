@@ -1,8 +1,8 @@
 {
   "_comment": "Team links shown on the site. A page uses one as [[id]] or @button [[id]]. The webmaster changes these on Alan's approve; change a url here, never in the pages.",
   "eventCalendar": {
-    "label": "2026 Event Calendar",
-    "url": "https://docs.google.com/spreadsheets/d/17gPzz1g5JHIiou5BbMmUZQd2RvlMdvhqHr91l0E7Sgo/edit?usp=sharing"
+    "label": "Event Calendar",
+    "url": "https://allinalan.github.io/rsd-show-shift-board/"
   },
   "showShiftBoard": {
     "label": "Show Shift Board",
