@@ -29,5 +29,16 @@ lines, each on its own:
   one person is one line. Styles: `.team` in `assets/site.css`; its two fonts load only on a page that has it.
 - `@embed <url>` a video; `@button [[id]]` or `@button [Label](url)` a button; `@dates` the Important Dates; `[[id]]` a team link
 
+## SUNNY on every page (since 2026-11-19)
+
+The little sun in the bottom corner of every page (`assets/sunny.js`, its styles at the end of `assets/site.css`, the
+`<script>` in build.js's page shell). Tap it, ask where something is, get one to three sentences and the links. It asks
+SUNNY's website helper (sunny-bot `api/site-chat.js`, `lib/site-helper.js`), which reads only this website's
+`pages.json`, `dates.json` and the team policy it links: no customers, no directory, no shift board. A personal question
+("who is my customer's rep?") gets "Open SUNNY", the app reps sign in to. The conversation lasts while the tab is open
+(sessionStorage), no name is stored, and answers go on the page as text, never as HTML. Sonnet 5.5, $1 a day for everyone.
+The questions the site couldn't answer reach Alan in #rsd-website every Monday (the webmaster). A build with
+`SUNNY_SITE_ENDPOINT=<url>` points the bubble at another helper (a local test); without it, the live one.
+
 A look that none of these gives is a new block: build.js plus `assets/site.css`, with a test, in a PR. The webmaster
 agent can use the blocks but never changes the design.
