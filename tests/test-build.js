@@ -76,7 +76,7 @@ t('@team on a real build: its fonts load on that page only, and a missing photo 
   for (const d of ['content', 'data', 'assets']) fs.cpSync(path.join(__dirname, '..', d), path.join(tmp, d), { recursive: true });
   fs.copyFileSync(path.join(__dirname, '..', 'build.js'), path.join(tmp, 'build.js'));
   const home = path.join(tmp, 'content', 'home.md');
-  fs.writeFileSync(home, fs.readFileSync(home, 'utf8').replace(/^!\[[^\n]*\n/m, '@team The Team\n- Nobody | img/not-there.jpg\n'));
+  fs.writeFileSync(home, fs.readFileSync(home, 'utf8').replace(/^# .*\n/m, h => h + '\n@team The Team\n- Nobody | img/not-there.jpg\n\n'));
   const r = require('child_process').spawnSync(process.execPath, ['build.js', '--check'], { cwd: tmp, encoding: 'utf8' });
   assert.notStrictEqual(r.status, 0);
   assert.match(r.stdout + r.stderr, /img\/not-there\.jpg, which is not in assets/);
@@ -86,6 +86,25 @@ t('@team on a real build: its fonts load on that page only, and a missing photo 
   assert.match(fs.readFileSync(path.join(tmp, 'docs', 'index.html'), 'utf8'), /family=Forum&family=Kodchasan/);
   assert.ok(!/Kodchasan/.test(fs.readFileSync(path.join(tmp, 'docs', 'dates', 'index.html'), 'utf8')));
   fs.rmSync(tmp, { recursive: true, force: true });
+});
+t('SUNNY on the website: every page loads sunny.js; it asks the live helper unless a build names another', () => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'rse-sunny-'));
+  delete process.env.SUNNY_SITE_ENDPOINT;
+  build(out);
+  const pages = [];
+  (function walk(d) { for (const f of fs.readdirSync(d)) { const p = path.join(d, f); if (fs.statSync(p).isDirectory()) walk(p); else if (f === 'index.html') pages.push(p); } })(out);
+  const real = pages.filter(p => !/http-equiv="refresh"/.test(fs.readFileSync(p, 'utf8')));
+  assert.ok(real.length >= 10);
+  for (const p of real) assert.match(fs.readFileSync(p, 'utf8'), /<script src="(\.\.\/)?sunny\.js" defer><\/script>/, p);
+  assert.ok(fs.existsSync(path.join(out, 'sunny.js')));
+  const js = fs.readFileSync(path.join(out, 'sunny.js'), 'utf8');
+  assert.match(js, /https:\/\/sunny-rsd\.vercel\.app\/api\/site-chat/);
+  assert.ok(!/innerHTML\s*=\s*(t|turn|j|l)\./.test(js), 'answers are put on the page as text, never as HTML');
+  process.env.SUNNY_SITE_ENDPOINT = 'http://127.0.0.1:9/api/site-chat';
+  build(out);
+  assert.match(fs.readFileSync(path.join(out, 'index.html'), 'utf8'), /sunny\.js" defer data-endpoint="http:\/\/127\.0\.0\.1:9\/api\/site-chat"/);
+  delete process.env.SUNNY_SITE_ENDPOINT;
+  fs.rmSync(out, { recursive: true, force: true });
 });
 t('the real site writes pages.json: every page, home first, each with words and its own address', () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'rse-test-'));

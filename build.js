@@ -288,6 +288,7 @@ ${main.includes('<section class="team">') ? '<link href="https://fonts.googleapi
 <main>
 ${main}
 </main>
+<script src="${base}sunny.js" defer${process.env.SUNNY_SITE_ENDPOINT ? ` data-endpoint="${esc(process.env.SUNNY_SITE_ENDPOINT)}"` : ''}></script>
 <footer class="site-footer">${esc(site.footer)} · <a href="${base}dates/">Important Dates</a> · <a href="${base}dates.ics">Add the dates to your calendar</a></footer>
 </body>
 </html>

@@ -15,6 +15,9 @@ Built 2026-11-17 to replace the Squarespace site (Alan: "Build my own site", all
 - **Readers:** reps (the site), SUNNY (`dates.json`, once `SUNNY_DATES_SOURCE=site`; and since 2026-11-18 `pages.json`,
   every page as plain text, so it can answer from the whole site), the webmaster's read-back (`build.json` fingerprint).
   `pages.json` is built from the same markdown as the pages: a link is `label (url)`, no images, no HTML.
+- **SUNNY on every page** (2026-11-19, Alan: "all defaults"): `assets/sunny.js` asks sunny-bot's `api/site-chat.js`, which
+  knows only what this site says (README "SUNNY on every page"). The site's words are its knowledge, so a page the webmaster
+  publishes is what it answers from within 30 minutes. Never point it at SUNNY's full `/api/chat`.
 - **Domain:** live at www.risingsunevents.net since 2026-11-17 (`data/site.json` `cname`; build.js writes docs/CNAME;
   Pages HTTPS enforced). DNS stays at Squarespace Domains (rsdcoordinator2's Squarespace login): four `A @` to GitHub
   Pages, `CNAME www` allinalan.github.io, plus three verification CNAMEs left as they were. CUTOVER.md has the record.
